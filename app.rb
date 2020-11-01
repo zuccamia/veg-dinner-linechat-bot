@@ -45,8 +45,8 @@ def suggest_meal_idea
 end
 
 def search_that(message)
-  ecosia_first_page = Nokogiri::HTML(open("https://www.ecosia.org/search?q=#{message}").read)
-  ecosia_first_page.search('.result-title[href]')[0].attribute('href').value
+  ecosia_first_page = Nokogiri::HTML(open("https://www.ecosia.org/search?q=#{message.gsub(/\s/, '+')}").read)
+  ecosia_first_page.search('.result-url[href]')[0].attribute('href').value
 end
 
 def send_bot_message(message, client, event)
