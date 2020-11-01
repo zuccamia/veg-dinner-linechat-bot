@@ -1,0 +1,66 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.7.0)
+      public_suffix (>= 2.0.2, < 5.0)
+    concurrent-ruby (1.1.7)
+    domain_name (0.5.20190701)
+      unf (>= 0.0.5, < 1.0.0)
+    eventmachine (1.2.7)
+    faye-websocket (0.11.0)
+      eventmachine (>= 0.12.0)
+      websocket-driver (>= 0.5.1)
+    geocoder (1.6.4)
+    http (4.1.1)
+      addressable (~> 2.3)
+      http-cookie (~> 1.0)
+      http-form_data (~> 2.0)
+      http_parser.rb (~> 0.6.0)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
+    http-form_data (2.3.0)
+    http_parser.rb (0.6.0)
+    ibm_cloud_sdk_core (1.1.1)
+      concurrent-ruby (~> 1.0)
+      http (~> 4.1.0)
+      jwt (~> 2.2.1)
+    ibm_watson (1.6.0)
+      concurrent-ruby (~> 1.0)
+      eventmachine (~> 1.2)
+      faye-websocket (~> 0.10)
+      http (~> 4.1.0)
+      ibm_cloud_sdk_core (~> 1.1.1)
+      jwt (~> 2.2.1)
+    jwt (2.2.2)
+    line-bot-api (1.16.0)
+    mustermann (1.1.1)
+      ruby2_keywords (~> 0.0.1)
+    public_suffix (4.0.6)
+    rack (2.2.3)
+    rack-protection (2.1.0)
+      rack
+    ruby2_keywords (0.0.2)
+    sinatra (2.1.0)
+      mustermann (~> 1.0)
+      rack (~> 2.2)
+      rack-protection (= 2.1.0)
+      tilt (~> 2.0)
+    tilt (2.0.10)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.7)
+    websocket-driver (0.7.3)
+      websocket-extensions (>= 0.1.0)
+    websocket-extensions (0.1.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  geocoder
+  ibm_watson
+  line-bot-api
+  sinatra
+
+BUNDLED WITH
+   2.1.4
