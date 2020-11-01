@@ -11,8 +11,8 @@ Scan the QR with your LINE app
 - [Sinatra](http://sinatrarb.com/)
 
 ## What can Koko do?
-1. Welcome you
-2. Think up decent ideas for your next vegetarian dish
+1. Welcome you (say hi!)
+2. Think up decent ideas for your next vegetarian dish (ask what's for dinner or say you're hungry...)
 3. Search the Internet for some of your questions
 
 **Remember to call Koko name in your message!**
