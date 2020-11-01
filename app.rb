@@ -17,14 +17,12 @@ end
 def bot_respond_to(message, user_name)
   return '' unless message.downcase.include?('koko') # Only answer to messages with 'koko'
 
-  if message.downcase.match?(/(hello | hi | yo | heyo | hey).*/)
+  if message.downcase.match?(/(hello|hi|yo|heyo|hey).*/)
     # respond if a user says hello
     "Hello #{user_name}, how are you doing?"
-  elsif message.downcase.match?(/(hungry | starving | no idea | dinner | eat | lunch | food).*/)
+  elsif message.downcase.match?(/(hungry|starving|dinner|eat|lunch|food).*/)
     # respond if user is ready
     suggest_meal_idea
-  elsif message.downcase.match?(/(no | not yet | nope | nah).*/)
-    ['No problem, take your time!', 'Later then', 'Perhaps you are hungry?'].sample
   elsif message.end_with?('?')
     # respond if a user asks a question
     "Hmm..good question, #{user_name}. I actually looked that up and here is the top result: #{search_that(message)}. Good luck!"
