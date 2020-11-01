@@ -5,7 +5,6 @@ require 'line/bot'
 require 'net/http'
 require 'tempfile'
 require 'nokogiri'
-require 'csv'
 
 def client
   @client ||= Line::Bot::Client.new do |config|
@@ -16,7 +15,7 @@ end
 
 GREETINGS = ['您好', 'Hola', 'नमस्ते', 'Namaste', 'Olá', '今日は', 'Hallo', 'Guten Tag', 'Bonjour', 'Salut', 'Merhaba', 'Ciao', 'สวัสดี', 'Chào bạn']
 def bot_respond_to(message, user_name)
-  return '' unless message.downcase.include?('koko') # Only answer to messages with 'koko'
+#   return '' unless message.downcase.include?('koko') # Only answer to messages with 'koko'
 
   if message.downcase.match?(/(hello|hi|yo|heyo|hey).*/)
     # respond if a user says hello
