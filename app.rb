@@ -12,7 +12,6 @@ require_relative 'proteins'
 
 def client
   @client ||= Line::Bot::Client.new do |config|
-    config.channel_id = ENV["LINE_CHANNEL_ID"]
     config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
     config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
   end
@@ -28,7 +27,7 @@ def bot_respond_to(message, user_name)
     # respond if user is ready
     suggest_meal_idea
   elsif message.downcase.match?(/(no | not yet | nope | nah).*/)
-    ['No problem, take your time!', 'Later then', 'Are you not hungry?'].sample
+    ['No problem, take your time!', 'Later then', 'Perhaps you are hungry?'].sample
   elsif message.end_with?('?')
     # respond if a user asks a question
     "Hmm..good question, #{user_name}. I actually looked that up and here is the top result: #{search_that(message)}. Good luck!"
