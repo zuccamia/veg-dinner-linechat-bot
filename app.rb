@@ -7,9 +7,6 @@ require 'tempfile'
 require 'nokogiri'
 require 'csv'
 
-require_relative 'vegetables'
-require_relative 'proteins'
-
 def client
   @client ||= Line::Bot::Client.new do |config|
     config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
@@ -39,11 +36,14 @@ end
 WAYS_TO_COOK_VEG = ['Grilled', 'Sautéd', 'Roasted', 'Stir-fried', 'Deep-fried', 'Blanched', 'Steamed', 'Boiled']
 WAYS_TO_COOK_PROTEIN = ['Stewed', 'Curried', 'Baked', 'Mashed', 'Roasted', 'Canned', 'Braised', 'Fried', 'Sprouted']
 SAUCE_BASE = ['Tomato', 'Coconut', 'Creamy', 'Lemony', 'Soupy', 'Spicy Tahini', 'Burritos with', 'Cheesy', 'Chili', 'Buddha Bowl with']
+VEGETABLES = %w[Acorn-squash  Alfalfa  Anise  Artichoke  Arugula  Asparagus  Aubergine  Banana-squash  Basil  Bean-sprouts  Beet  Beetroot  Bell-pepper  Bok-choy  Broccoflower  Broccoli  Brussels-sprouts  Butternut-squash  Cabbage  Calabrese  Capsicum  Caraway  Carrot  Cauliflower  Cayenne-pepper  Celeriac  Celery  Chamomile  Chard  Chili-pepper  Chives  Cilantro  Collard-greens  Corn  Corn-salad  Courgette  Cucumber  Daikon  Delicata  Dill  Eggplant  Endive  Fennel  Fiddleheads  Frisee  fungus  Garlic  Gem-squash  Ginger  Grain  Green-beans  Green-onion  Green-pepper  Habanero  Herbs  Horseradish  Hubbard-squash  Jalapeno  Jerusalem-artichoke  Jicama  Kale  Kohlrabi  Lavender  Leek  Lemon-Grass  Lettuce  Maize  Mangel-wurzel  Mangetout  Marjoram  Marrow  Mushrooms  Mustard-greens  Nettles  New-Zealand-spinach  Okra  Onion  Oregano  Paprika  Parsley  Parsley  Parsnip  Patty-pans  Peppers  Pimento  Plant  Potato  Pumpkin  Purple-Salsify  Radicchio  Radish  Red-pepper  Rhubarb  Root-vegetables  Rosemary  Rutabaga  Sage  Salsify  Scallion  Shallot  Skirret  Snap-peas  Spaghetti-squash  Spinach  Spring-onion  Squash  Squashes  Swede  Sweet-potato  Sweetcorn  Tabasco-pepper  Taro  Tat-soi  Thyme  Tomato  Tubers  Turnip  Wasabi  Water-chestnut  Watercress  White-radish  Yam  Zucchini]
+PROTEINS = %w[Edamame Tofu Tempeh Quinoa Amaranth Adzuki-bean Broad-bean Faba-(Fava)-bean Bell-bean Field-bean Windsorbean Horsebean Tickbean Pigeon-bean Vetch Kidney-bean Habichuela Snap-bean Chick-pea Bengal-gram Calvance-pea Chestnut-bean Dwarf-pea Garbanza Garbanzo-bean Garbanzos Gram Gram-pea Yellow-gram Cowpea Asparagus-bean Black-eyed-pea Black-eyed-bean Crowder-pea Field-pea Southern-pea Frijole Paayap Guar-bean Cluster-bean Hyacinth-bean Bonavist Bataw Lablab Lentil Lima-bean Butter-bean Patani Lupin Lupine Sweet-lupin White-lupin Blue-lupin Yellow-lupin Andean-lupin Pearl-lupin Wild-lupin Mung-bean Mungo Pea Dry-pea Podded-pea Chicharo Peanut Groundnut Earth-nut Mani Runner-peanut Soybean Tepary-bean]
 
 def suggest_meal_idea
-  vegetable = CSV.read(File.join(__dir__, 'vegetables.csv')).sample
-  protein = CSV.read(File.join(__dir__, 'proteins.csv')).sample
-  "How about #{SAUCE_BASE.sample} #{WAYS_TO_COOK_PROTEIN.sample} #{protein} with #{WAYS_TO_COOK_VEG.sample} #{vegetable}?"
+  vegetable = VEGETABLES.sample
+  protein = PROTEINS.sample
+  sauce = SAUCE_BASE.sample
+  "How about #{sauce} #{WAYS_TO_COOK_PROTEIN.sample} #{protein} with #{WAYS_TO_COOK_VEG.sample} #{vegetable}?"
 end
 
 def search_that(message)
@@ -103,7 +103,7 @@ post '/callback' do
       else
         # The answer mechanism is here!
         send_bot_message(
-        bot_answer_to(event.message['text'], user_name),
+        bot_respond_to(event.message['text'], user_name),
         client,
         event
         )
