@@ -45,8 +45,7 @@ def suggest_meal_idea
 end
 
 def search_that(message)
-  ecosia_first_page = Nokogiri::HTML(open(URI.escape("https://www.ecosia.org/search?q=#{message}")))
-  ecosia_first_page.css('div.offset-lg-1.col-lg-7.col-sm-12.mainline')[0].css('a')[0]['href']
+  Nokogiri::HTML(open(URI.escape("https://www.ecosia.org/search?q=#{message}"))).css('div.offset-lg-1.col-lg-7.col-sm-12.mainline')[0].css('a')[0]['href']
 end
 
 def send_bot_message(message, client, event)
