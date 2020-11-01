@@ -14,12 +14,13 @@ def client
   end
 end
 
+GREETINGS = ['您好', 'Hola', 'नमस्ते', 'Namaste', 'Olá', '今日は', 'Hallo', 'Guten Tag', 'Bonjour', 'Salut', 'Merhaba', 'Ciao', 'สวัสดี', 'Chào bạn']
 def bot_respond_to(message, user_name)
   return '' unless message.downcase.include?('koko') # Only answer to messages with 'koko'
 
   if message.downcase.match?(/(hello|hi|yo|heyo|hey).*/)
     # respond if a user says hello
-    "Hello #{user_name}, how are you doing?"
+    "#{GREETINGS.sample} #{user_name}, how are you doing?"
   elsif message.downcase.match?(/(hungry|starving|dinner|eat|lunch|food).*/)
     # respond if user is ready
     suggest_meal_idea
