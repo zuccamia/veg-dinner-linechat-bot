@@ -3,7 +3,7 @@ A bot that suggests sophisticated vegetarian dinner ideas!
 
 ## Add Koko!
 Scan the QR with your LINE app
-![add-koko]()
+![add-koko](https://github.com/zuccamia/veg-dinner-linechat-bot/blob/main/images/koko-bot-qr-code.png)
 
 ## What I Use
 - [LINE Messaging API](https://developers.line.me/en/docs/messaging-api/)
