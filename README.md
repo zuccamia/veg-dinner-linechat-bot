@@ -16,3 +16,6 @@ Scan the QR with your LINE app
 3. Search the Internet for some of your questions
 
 **Remember to call Koko name in your message!**
+
+## Inspiration
+[Bob the Bot Workshop by Le Wagon Japan](https://github.com/lewagonjapan/bob-the-bot)
