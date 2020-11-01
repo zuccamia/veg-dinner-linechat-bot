@@ -36,14 +36,14 @@ def bot_respond_to(message, user_name)
   end
 end
 
-WAYS_TO_COOK_VEG = ['grilled', 'sautéd', 'roasted', 'stir-fried', 'deep-fried', 'blanched', 'steamed', 'boiled']
-WAYS_TO_COOK_PROTEIN = ['stewed', 'curried', 'baked', 'mashed', 'roasted', 'canned', 'braised', 'fried', 'sprouted']
-SAUCE_BASE = ['tomato', 'coconut', 'creamy', 'lemony', 'soupy', 'spicy tahini', 'burritos with', 'cheesy', 'chili', 'buddha bowl with']
+WAYS_TO_COOK_VEG = ['Grilled', 'Sautéd', 'Roasted', 'Stir-fried', 'Deep-fried', 'Blanched', 'Steamed', 'Boiled']
+WAYS_TO_COOK_PROTEIN = ['Stewed', 'Curried', 'Baked', 'Mashed', 'Roasted', 'Canned', 'Braised', 'Fried', 'Sprouted']
+SAUCE_BASE = ['Tomato', 'Coconut', 'Creamy', 'Lemony', 'Soupy', 'Spicy Tahini', 'Burritos with', 'Cheesy', 'Chili', 'Buddha Bowl with']
 
 def suggest_meal_idea
   vegetable = CSV.read(File.join(__dir__, 'vegetables.csv')).sample
   protein = CSV.read(File.join(__dir__, 'proteins.csv')).sample
-  "How about #{SAUCE_BASE.sample.capitalized} #{WAYS_TO_COOK_PROTEIN.sample.capitalized} #{protein} with #{WAYS_TO_COOK_VEG.sample.capitalized} #{vegetable}?"
+  "How about #{SAUCE_BASE.sample} #{WAYS_TO_COOK_PROTEIN.sample} #{protein} with #{WAYS_TO_COOK_VEG.sample} #{vegetable}?"
 end
 
 def search_that(message)
@@ -52,62 +52,74 @@ def search_that(message)
 end
 
 def send_bot_message(message, client, event)
-    # Log prints
-    p 'Bot message sent!'
-    p event['replyToken']
-    p client
-  
-    message = { type: 'text', text: message }
-    p message
-  
-    client.reply_message(event['replyToken'], message)
-    'OK'
+  # Log prints
+  p 'Bot message sent!'
+  p event['replyToken']
+  p client
+
+  message = { type: 'text', text: message }
+  p message
+
+  client.reply_message(event['replyToken'], message)
+  'OK'
+end
+
+post '/callback' do
+  body = request.body.read
+
+  signature = request.env['HTTP_X_LINE_SIGNATURE']
+  unless client.validate_signature(body, signature)
+    error 400 do 'Bad Request' end
   end
-  
-  post '/callback' do
-    body = request.body.read
-  
-    signature = request.env['HTTP_X_LINE_SIGNATURE']
-    unless client.validate_signature(body, signature)
-      error 400 do 'Bad Request' end
+
+  events = client.parse_events_from(body)
+  events.each do |event|
+    p event
+    # Focus on the message events (including text, image, emoji, vocal.. messages)
+    next if event.class != Line::Bot::Event::Message
+
+    # case event.type
+    # when receive a text message
+    if event.type == Line::Bot::Event::MessageType::Text
+    user_name = ''
+    user_id = event['source']['userId']
+    response = client.get_profile(user_id)
+      if response.class == Net::HTTPOK
+        contact = JSON.parse(response.body)
+        p contact
+        user_name = contact['displayName']
+      else
+        # Can't retrieve the contact info
+        p "#{response.code} #{response.body}"
+      end
+
+      if event.message['text'].downcase == 'hello, world'
+        # Sending a message when LINE tries to verify the webhook
+        send_bot_message(
+        'Everything is working!',
+        client,
+        event
+        )
+      else
+        # The answer mechanism is here!
+        send_bot_message(
+        bot_answer_to(event.message['text'], user_name),
+        client,
+        event
+        )
+      end
+    # # when receive an image message
+    # when Line::Bot::Event::MessageType::Image
+    # response_image = client.get_message_content(event.message['id'])
+    # fetch_ibm_watson(response_image) do |image_results|
+    #     # Sending the image results
+    #     send_bot_message(
+    #     "Looking at that picture, the first words that come to me are #{image_results[0..1].join(', ')} and #{image_results[2]}. Pretty good, eh?",
+    #     client,
+    #     event
+    #     )
+    #   end
     end
-  
-    events = client.parse_events_from(body)
-    events.each do |event|
-      p event
-      # Focus on the message events (including text, image, emoji, vocal.. messages)
-      next if event.class != Line::Bot::Event::Message
-  
-      case event.type
-      # when receive a text message
-      when Line::Bot::Event::MessageType::Text
-        user_name = ''
-        user_id = event['source']['userId']
-        response = client.get_profile(user_id)
-        if response.class == Net::HTTPOK
-          contact = JSON.parse(response.body)
-          p contact
-          user_name = contact['displayName']
-        else
-          # Can't retrieve the contact info
-          p "#{response.code} #{response.body}"
-        end
-  
-        if event.message['text'].downcase == 'hello, world'
-          # Sending a message when LINE tries to verify the webhook
-          send_bot_message(
-            'Everything is working!',
-            client,
-            event
-          )
-        else
-          # The answer mechanism is here!
-          send_bot_message(
-            bot_answer_to(event.message['text'], user_name),
-            client,
-            event
-          )
-        end
-    end
-    'OK'
   end
+  'OK'
+end
