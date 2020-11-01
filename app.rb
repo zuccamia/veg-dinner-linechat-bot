@@ -25,7 +25,7 @@ def bot_respond_to(message, user_name)
     suggest_meal_idea
   elsif message.end_with?('?')
     # respond if a user asks a question
-    "Hmm..good question, #{user_name}. I actually looked that up and here is the top result: #{search_that(message)}. Good luck!"
+    "Hmm..good question, #{user_name}. I actually looked that up and here is the top result: #{search_that(message)}.\nGood luck!"
   else
     ['Oh, I did not know that.', 'Great to hear that.', 'Interesting.', 'Cool cool cool'].sample
   end
@@ -45,9 +45,8 @@ def suggest_meal_idea
 end
 
 def search_that(message)
-#   ecosia_first_page = Nokogiri::HTML(open(URI.escape("https://www.ecosia.org/search?q=#{message}")))
-  URI.escape("https://www.ecosia.org/search?q=#{message}")
-#   ecosia_first_page.css('.result-url[href]')[0].text.strip
+  ecosia_first_page = Nokogiri::HTML(open(URI.escape("https://www.ecosia.org/search?q=#{message}")))
+  ecosia_first_page.css('.result-url[href]')[0].text.strip
 end
 
 def send_bot_message(message, client, event)
