@@ -50,7 +50,7 @@ def search_that(message)
   p URI.escape("https://www.ecosia.org/search?q=#{message}")
   puts ""
   p RestClient.get URI.escape("https://www.ecosia.org/search?q=#{message}")
-  doc = Nokogiri.HTML(RestClient.get(URI.escape("https://www.ecosia.org/search?q=#{message}")))
+  doc = Nokogiri.HTML(RestClient.get(URI.escape("https://www.ecosia.org/search?q=#{message}")), nil, 'utf-8')
   puts ""
   p doc.css('div.offset-lg-1.col-lg-7.col-sm-12.mainline')[0].css('.result-url').css('a')[0]['href']
 
