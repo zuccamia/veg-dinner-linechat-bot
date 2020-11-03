@@ -1,4 +1,11 @@
-
+require 'sinatra'
+require 'json'
+require 'open-uri'
+require 'line/bot'
+require 'net/http'
+require 'tempfile'
+require 'nokogiri'
+require 'rest-client'
 
 def client
   @client ||= Line::Bot::Client.new do |config|
