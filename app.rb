@@ -1,11 +1,4 @@
-require 'sinatra'
-require 'json'
-require 'open-uri'
-require 'line/bot'
-require 'net/http'
-require 'tempfile'
-require 'nokogiri'
-require 'rest-client'
+
 
 def client
   @client ||= Line::Bot::Client.new do |config|
@@ -51,8 +44,10 @@ def search_that(message)
   p URI.escape("https://www.ecosia.org/search?q=#{message}")
   puts ""
   p RestClient.get URI.escape("https://www.ecosia.org/search?q=#{message}")
+  doc = Nokogiri::HTML(RestClient.get(URI.escape("https://www.ecosia.org/search?q=#{message}")))
+  puts ""
+  p doc.css('div.offset-lg-1.col-lg-7.col-sm-12.mainline')[0].css('.result-url').css('a')[0]['href']
 
-  Nokogiri::HTML(RestClient.get(URI.escape("https://www.ecosia.org/search?q=#{message}"))).css('div.offset-lg-1.col-lg-7.col-sm-12.mainline')[0].css('.result-url').css('a')[0]['href']
 end
 
 def send_bot_message(message, client, event)
