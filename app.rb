@@ -47,8 +47,7 @@ def suggest_meal_idea
 end
 
 def search_that(message)
-  uri = URI.parse(URI.escape("https://api.duckduckgo.com/?q=#{message}&format=json&pretty=1"))
-  json = RestClient.get(uri)
+  json = RestClient.get(URI.escape("https://api.duckduckgo.com/?q=#{message}&format=json&pretty=1"))
   text = JSON.parse(json)['RelatedTopics'].first['Text']
   url = JSON.parse(json)['RelatedTopics'].first['FirstURL']
   text + url
