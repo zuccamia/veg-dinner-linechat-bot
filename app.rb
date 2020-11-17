@@ -6,6 +6,7 @@ require 'tempfile'
 require 'nokogiri'
 require 'rest-client'
 require 'cgi'
+require 'json'
 
 def client
   @client ||= Line::Bot::Client.new do |config|
@@ -46,15 +47,10 @@ def suggest_meal_idea
 end
 
 def search_that(message)
-  p message
-  puts ""
-  p CGI.escape("https://www.ecosia.org/search?q=#{message}")
-  puts ""
-  p RestClient.get URI.escape("https://www.ecosia.org/search?q=#{message}")
-  doc = Nokogiri::HTML(RestClient.get(URI.escape("https://www.ecosia.org/search?q=#{message}")), nil, 'utf-8')
-  puts ""
-  p doc.children.css('div.offset-lg-1.col-lg-7.col-sm-12.mainline')[0].css('.result-url').css('a')[0]['href']
-
+  json = RestClient.get("https://api.duckduckgo.com/?q=#{message}&format=json&pretty=1")
+  text = JSON.parse(json)['RelatedTopics'].first['Text']
+  url = JSON.parse(json)['RelatedTopics'].first['FirstURL']
+  text + url
 end
 
 def send_bot_message(message, client, event)
