@@ -27,7 +27,7 @@ def bot_respond_to(message, user_name)
     suggest_meal_idea
   elsif message.end_with?('?')
     # respond if a user asks a question
-    "Hmm..good question, #{user_name}. \nI actually looked that up and here is the top result:\n#{search_that(message)}.\nGood luck!"
+    "Hmm..good question, #{user_name}. \nI actually looked that up and here is the top result:\n#{search_that(message)}.\n\nGood luck!"
   else
     ['Oh, I did not know that.', 'Great to hear that.', 'Interesting.', 'Cool cool cool'].sample
   end
