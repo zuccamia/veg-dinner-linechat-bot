@@ -49,7 +49,7 @@ end
 def search_that(message)
   json = RestClient.get(URI.escape("https://api.duckduckgo.com/?q=#{message}&format=json&pretty=1"))
   ""
-  p json
+  p JSON.parse(json)
   ""
   text = JSON.parse(json)['RelatedTopics'].first['Text']
   url = JSON.parse(json)['RelatedTopics'].first['FirstURL']
