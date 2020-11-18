@@ -27,7 +27,7 @@ def bot_respond_to(message, user_name)
     suggest_meal_idea
   elsif message.end_with?('?')
     # respond if a user asks a question
-    "Hmm..good question, #{user_name}. I actually looked that up and here is the top result: #{search_that(message)}.\nGood luck!"
+    "Hmm..good question, #{user_name}. \nI actually looked that up and here is the top result:\n#{search_that(message)}.\nGood luck!"
   else
     ['Oh, I did not know that.', 'Great to hear that.', 'Interesting.', 'Cool cool cool'].sample
   end
@@ -51,7 +51,7 @@ def search_that(message)
   json = RestClient.get(URI.escape("https://api.duckduckgo.com/?q=#{message}&format=json&pretty=1"))
   text = JSON.parse(json)['RelatedTopics'].first['Text']
   url = JSON.parse(json)['RelatedTopics'].first['FirstURL']
-  text + url
+  "#{text}\n\n#{url}"
 end
 
 def send_bot_message(message, client, event)
