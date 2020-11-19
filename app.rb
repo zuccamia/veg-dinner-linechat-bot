@@ -27,7 +27,7 @@ def bot_respond_to(message, user_name)
     suggest_meal_idea
   elsif message.end_with?('?')
     # respond if a user asks a question
-    search_that
+    search_that(message)
   else
     ['Oh, I did not know that.', 'Great to hear that.', 'Interesting.', 'Cool cool cool'].sample
   end
