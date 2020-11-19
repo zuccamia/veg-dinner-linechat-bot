@@ -47,14 +47,13 @@ def suggest_meal_idea
 end
 
 def search_that(message)
-  message = message.split.pop # remove question mark
   json = RestClient.get(URI.escape("https://api.duckduckgo.com/?q=#{message}&format=json&pretty=1"))
   if JSON.parse(json).nil?
     "I'm sorry, I couldn't grasp the whole thing. Could you break it down, please?"
   else
     text = JSON.parse(json)['RelatedTopics'].first['Text']
     url = JSON.parse(json)['RelatedTopics'].first['FirstURL']
-    "Hmm..good question, #{user_name}. \nI actually looked that up and here is the top result:\n#{text}.\n\n#{url}\n\nGood luck!"
+    "Hmm..good question.\nI actually looked that up and here is the top result:\n#{text}.\n\n#{url}\n\nGood luck!"
   end
 end
 
